@@ -1,9 +1,18 @@
 import { create } from "zustand";
 
+interface Bears {
+  id: number;
+  name: string;
+}
+
 interface BearState {
   blackBears: number;
   pandaBears: number;
   polarBears: number;
+
+  bears: Bears[];
+
+  doNothing: () => void;
 
   //blackBear
   increseBlackBear: (by: number) => void;
@@ -24,6 +33,10 @@ export const useBearsStore = create<BearState>()((set) => ({
   blackBears: 0,
   pandaBears: 0,
   polarBears: 0,
+
+  bears: [{ id: 111, name: "Germain" }],
+  doNothing: () => set((state) => ({ bears: [...state.bears] })),
+
   //function blackBear
   increseBlackBear: (by) =>
     set((state) => ({ blackBears: state.blackBears + by })),
