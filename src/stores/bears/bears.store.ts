@@ -10,11 +10,17 @@ interface BearState {
   pandaBears: number;
   polarBears: number;
 
+  //nested object
   bears: Bears[];
   addBear: () => void;
   clearBear: () => void;
-
   doNothing: () => void;
+
+  //computed properties
+
+  computed: {
+    totalBears: number;
+  };
 
   //blackBear
   increseBlackBear: (by: number) => void;
@@ -31,11 +37,13 @@ interface BearState {
   decresePolarBear: (by: number) => void;
 }
 
-export const useBearsStore = create<BearState>()((set) => ({
+export const useBearsStore = create<BearState>()((set, get) => ({
+  //states
   blackBears: 0,
   pandaBears: 0,
   polarBears: 0,
 
+  //nested object
   bears: [
     { id: 1, name: "Oso # 1" },
     { id: 3, name: "Oso # 3" },
@@ -51,6 +59,19 @@ export const useBearsStore = create<BearState>()((set) => ({
     })),
 
   clearBear: () => set({ bears: [] }),
+
+  //computed properties
+
+  computed: {
+    get totalBears(): number {
+      return (
+        get().blackBears +
+        get().pandaBears +
+        get().polarBears +
+        get().bears.length
+      );
+    },
+  },
 
   //function blackBear
   increseBlackBear: (by) =>
