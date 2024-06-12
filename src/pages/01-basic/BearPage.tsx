@@ -78,11 +78,17 @@ export function BearsDisplay() {
 
   // const bears = useBearsStore((state) => state.bears);
   const doNothing = useBearsStore((state) => state.doNothing);
+  const addBear = useBearsStore((state) => state.addBear);
+  const clearBear = useBearsStore((state) => state.clearBear);
 
   return (
     <WhiteCard>
       <h1>Osos:</h1>
-      <button onClick={doNothing}>Reset</button>
+      <button onClick={doNothing}>Do Nothing</button>
+
+      <button onClick={addBear}>addbear</button>
+      <button onClick={clearBear}>resetbear</button>
+
       <pre>{JSON.stringify(bears, null, 2)}</pre>
     </WhiteCard>
   );

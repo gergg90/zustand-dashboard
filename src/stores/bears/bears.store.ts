@@ -11,6 +11,8 @@ interface BearState {
   polarBears: number;
 
   bears: Bears[];
+  addBear: () => void;
+  clearBear: () => void;
 
   doNothing: () => void;
 
@@ -34,8 +36,21 @@ export const useBearsStore = create<BearState>()((set) => ({
   pandaBears: 0,
   polarBears: 0,
 
-  bears: [{ id: 111, name: "Germain" }],
+  bears: [
+    { id: 1, name: "Oso # 1" },
+    { id: 3, name: "Oso # 3" },
+  ],
   doNothing: () => set((state) => ({ bears: [...state.bears] })),
+
+  addBear: () =>
+    set((state) => ({
+      bears: [
+        ...state.bears,
+        { id: state.bears.length + 1, name: `Oso # ${state.bears.length + 1}` },
+      ],
+    })),
+
+  clearBear: () => set({ bears: [] }),
 
   //function blackBear
   increseBlackBear: (by) =>
