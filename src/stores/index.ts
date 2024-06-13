@@ -1,2 +1,2 @@
 export * from "./bears/bears.store";
-export * from "./storages/session-storage.storage";
+export * from "./storages/session.storage";
