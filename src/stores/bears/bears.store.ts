@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 interface Bears {
   id: number;
@@ -18,9 +19,7 @@ interface BearState {
 
   //computed properties
 
-  computed: {
-    totalBears: number;
-  };
+  totalBears: () => number;
 
   //blackBear
   increseBlackBear: (by: number) => void;
@@ -37,57 +36,62 @@ interface BearState {
   decresePolarBear: (by: number) => void;
 }
 
-export const useBearsStore = create<BearState>()((set, get) => ({
-  //states
-  blackBears: 0,
-  pandaBears: 0,
-  polarBears: 0,
+export const useBearsStore = create<BearState>()(
+  persist(
+    (set, get) => ({
+      //states
+      blackBears: 0,
+      pandaBears: 0,
+      polarBears: 0,
 
-  //nested object
-  bears: [
-    { id: 1, name: "Oso # 1" },
-    { id: 3, name: "Oso # 3" },
-  ],
-  doNothing: () => set((state) => ({ bears: [...state.bears] })),
-
-  addBear: () =>
-    set((state) => ({
+      //nested object
       bears: [
-        ...state.bears,
-        { id: state.bears.length + 1, name: `Oso # ${state.bears.length + 1}` },
+        { id: 1, name: "Oso # 1" },
+        { id: 3, name: "Oso # 3" },
       ],
-    })),
+      doNothing: () => set((state) => ({ bears: [...state.bears] })),
 
-  clearBear: () => set({ bears: [] }),
+      addBear: () =>
+        set((state) => ({
+          bears: [
+            ...state.bears,
+            {
+              id: state.bears.length + 1,
+              name: `Oso # ${state.bears.length + 1}`,
+            },
+          ],
+        })),
 
-  //computed properties
+      clearBear: () => set({ bears: [] }),
 
-  computed: {
-    get totalBears(): number {
-      return (
-        get().blackBears +
-        get().pandaBears +
-        get().polarBears +
-        get().bears.length
-      );
-    },
-  },
+      //computed properties
 
-  //function blackBear
-  increseBlackBear: (by) =>
-    set((state) => ({ blackBears: state.blackBears + by })),
-  decreseBlackBear: (by) =>
-    set((state) => ({ blackBears: state.blackBears - by })),
+      totalBears: () => {
+        return (
+          get().blackBears +
+          get().pandaBears +
+          get().polarBears +
+          get().bears.length
+        );
+      },
+      //function blackBear
+      increseBlackBear: (by) =>
+        set((state) => ({ blackBears: state.blackBears + by })),
+      decreseBlackBear: (by) =>
+        set((state) => ({ blackBears: state.blackBears - by })),
 
-  //function pandaBear
-  incresePandaBear: (by) =>
-    set((state) => ({ pandaBears: state.pandaBears + by })),
-  decresePandaBear: (by) =>
-    set((state) => ({ pandaBears: state.pandaBears - by })),
+      //function pandaBear
+      incresePandaBear: (by) =>
+        set((state) => ({ pandaBears: state.pandaBears + by })),
+      decresePandaBear: (by) =>
+        set((state) => ({ pandaBears: state.pandaBears - by })),
 
-  //function polarBear
-  incresePolarBear: (by) =>
-    set((state) => ({ polarBears: state.polarBears + by })),
-  decresePolarBear: (by) =>
-    set((state) => ({ polarBears: state.polarBears - by })),
-}));
+      //function polarBear
+      incresePolarBear: (by) =>
+        set((state) => ({ polarBears: state.polarBears + by })),
+      decresePolarBear: (by) =>
+        set((state) => ({ polarBears: state.polarBears - by })),
+    }),
+    { name: "bears-store" }
+  )
+);

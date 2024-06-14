@@ -1,5 +1,5 @@
 import { create, type StateCreator } from "zustand";
-import { persist } from "zustand/middleware";
+import { devtools, persist } from "zustand/middleware";
 import { firebaseStorage } from "../storages/firebase.storage";
 
 interface PersonState {
@@ -25,8 +25,10 @@ const storeAPI: StateCreator<PersonState & ActionsPerson> = (set) => ({
 // !type PersonActionState = ActionsPerson & PersonState;
 
 export const usePersonStore = create<PersonState & ActionsPerson>()(
-  persist(storeAPI, {
-    name: "person-storage",
-    storage: firebaseStorage,
-  })
+  devtools(
+    persist(storeAPI, {
+      name: "person-storage",
+      storage: firebaseStorage,
+    })
+  )
 );
