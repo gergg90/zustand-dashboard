@@ -35,6 +35,11 @@ const storeAPI: StateCreator<TaskState> = (set, get) => ({
       title: "title 4",
       status: "open",
     },
+    XYZ5: {
+      id: "XYZ5",
+      title: "title 5",
+      status: "done",
+    },
   },
 
   getTaskByStatus: (status: TasksStatus) => {
