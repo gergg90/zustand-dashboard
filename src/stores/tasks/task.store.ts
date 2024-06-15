@@ -1,38 +1,53 @@
 import { create, type StateCreator } from "zustand";
-import { persist } from "zustand/middleware";
-import { Task } from "../../interfaces";
+import { devtools } from "zustand/middleware";
+import { Task, TasksStatus } from "../../interfaces";
 
 interface TaskState {
+  dragginTaskId?: string;
   tasks: Record<string, Task>;
+
+  getTaskByStatus: (status: TasksStatus) => Task[];
+
+  setDragginTaskId: (taskId: string) => void;
+  removeDragginTaskId: () => void;
 }
 
-const storeAPI: StateCreator<TaskState> = (set) => ({
+const storeAPI: StateCreator<TaskState> = (set, get) => ({
+  dragginTaskId: undefined,
   tasks: {
     XYZ1: {
-      id: "1",
+      id: "XYZ1",
       title: "title 1",
       status: "in-progress",
     },
     XYZ2: {
-      id: "2",
+      id: "XYZ2",
       title: "title 2",
       status: "open",
     },
     XYZ3: {
-      id: "3",
+      id: "XYZ3",
       title: "title 3",
       status: "open",
     },
     XYZ4: {
-      id: "4",
+      id: "XYZ4",
       title: "title 4",
-      status: "done",
+      status: "open",
     },
+  },
+
+  getTaskByStatus: (status: TasksStatus) => {
+    const { tasks } = get();
+    return Object.values(tasks).filter((task) => task.status === status);
+  },
+
+  setDragginTaskId: (taskId: string) => {
+    set({ dragginTaskId: taskId });
+  },
+  removeDragginTaskId: () => {
+    set({ dragginTaskId: undefined });
   },
 });
 
-export const useTaskStore = create<TaskState>()(
-  persist(storeAPI, {
-    name: "tasks-storage",
-  })
-);
+export const useTaskStore = create<TaskState>()(devtools(storeAPI));
