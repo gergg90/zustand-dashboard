@@ -1,3 +1,4 @@
+import React from "react";
 import {
   IoCheckmarkCircleOutline,
   IoEllipsisHorizontalOutline,
@@ -12,8 +13,29 @@ interface Props {
 }
 
 export const JiraTasks = ({ title, tasks, value }: Props) => {
+  //! handlers
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    console.log("onDragLeave");
+  };
+
+  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    console.log("onDragOver");
+  };
+
+  const handleOnDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    console.log("onDrop", value);
+  };
+
   return (
-    <div className="!text-black relative flex flex-col rounded-[20px]  bg-white bg-clip-border shadow-3xl shadow-shadow-500  w-full !p-4 3xl:p-![18px]">
+    <div
+      onDragLeave={handleDragLeave}
+      onDragOver={handleDragOver}
+      onDrop={handleOnDrop}
+      className="!text-black relative flex flex-col rounded-[20px]  bg-white bg-clip-border shadow-3xl shadow-shadow-500  w-full !p-4 3xl:p-![18px]"
+    >
       {/* Task Header */}
       <div className="relative flex flex-row justify-between">
         <div className="flex items-center justify-center">
