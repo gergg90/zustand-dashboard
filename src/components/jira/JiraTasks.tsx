@@ -5,6 +5,8 @@ import { Task, TasksStatus } from "../../interfaces";
 import { useTaskStore } from "../../stores";
 import { SingleTask } from "./SingleTask";
 
+import Swal from "sweetalert2";
+
 interface Props {
   title: string;
   tasks: Task[];
@@ -19,8 +21,21 @@ export const JiraTasks = ({ title, tasks, value }: Props) => {
   const [onDragOver, setOnDragOver] = useState(false);
 
   //! newTask
-  const handleAddTask = () => {
-    addTask("NewTask For me", value);
+  const handleAddTask = async () => {
+    const res = await Swal.fire({
+      title: "Nuevo titulo",
+      input: "text",
+      inputLabel: "Nombre de la tarea",
+      inputPlaceholder: "...tarea",
+      showCancelButton: true,
+      inputValidator: (value) => {
+        if (!value) {
+          return "Debe ingresar el nombre de una tarea";
+        }
+      },
+    });
+
+    addTask(res.value, value);
   };
 
   //! handlers
