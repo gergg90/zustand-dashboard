@@ -10,10 +10,10 @@ import Swal from "sweetalert2";
 interface Props {
   title: string;
   tasks: Task[];
-  value: TasksStatus;
+  status: TasksStatus;
 }
 
-export const JiraTasks = ({ title, tasks, value }: Props) => {
+export const JiraTasks = ({ title, tasks, status: value }: Props) => {
   const isDraggin = useTaskStore((state) => !!state.dragginTaskId);
   const onTaskDrop = useTaskStore((state) => state.onTaskDrop);
   const addTask = useTaskStore((state) => state.addTask);
